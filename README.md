@@ -2,7 +2,7 @@
 
 ## Overview
 
-This paper investigates how fluctuations in the United States' Gross Domestic Product affected the danceability of music produced by American artists. 
+This paper investigates how fluctuations in the United States' Gross Domestic Product affected the danceability of music produced by American artists. We investigate 50 years of album and GDP data. 
 
 ## File Structure
 
