@@ -8,7 +8,7 @@ This paper investigates how fluctuations in the United States' Gross Domestic Pr
 
 The repo is structured as:
 
--   `data/raw_data` contains the raw data as obtained from X.
+-   `data/raw_data` contains the raw data as obtained from Spotify and FRED.
 -   `data/analysis_data` contains the cleaned dataset that was constructed.
 -   `model` contains fitted models. 
 -   `other` contains relevant literature, details about LLM chat interactions, and sketches.
@@ -23,7 +23,6 @@ Here is a quick guide to reproducing my graphs and tables.
 3. Clean it using 02-data_cleaning.R
 4. Open [] to test the R code that generated my plots
    
-Note: My folder structure and workflow is based on one created by the legendary Rohan Alexander, available at https://github.com/RohanAlexander/starter_folder
 
 ## Statement on LLM usage
 
