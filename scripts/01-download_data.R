@@ -14,8 +14,21 @@ library(eFRED)
 
 # [...UPDATE THIS...]
 
-#### Download data ####
-# [...ADD CODE HERE TO DOWNLOAD...]
+#### Download Spotify Data for songs released since  ####
+
+beyonce <- get_artist_audio_features("beyonce")
+saveRDS(beyonce, "data/raw_data/beyonce.rds")
+
+beyonce <- 
+  readRDS(here::here("data/raw_data/beyonce.rds"))
+
+beyonce
+
+
+
+
+## Download FRED Data
+
 
 
 
