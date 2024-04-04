@@ -11,6 +11,8 @@ format: pdf
 toc: true
 number-sections: true
 bibliography: references.bib
+nocite: |
+  @*
 ---
 
 ```{r}
@@ -30,7 +32,7 @@ library(spotifyr)
 
 Throughout the history of the music industry, musicians successful or not have always pined for one thing - writing a hit and making it big. However, for large music firms, taking on musicians that have yet to generate considerable popularity is an large risk, since they are often gambling on an unknown je ne sais quoi, and often, any given artist is more likely to not produce a hit than produce a hit; this is easily shown through the presence of a few small "superstars" that consistently dominate the music market [@rosen1981]. This poses an interesting question for artists vying to become that superstar: what does make a song a "hit"? 
 
-A canonical way to measure how popular a song may be is through the 'valence' or perceived energy of a song. Though measuring valence has been done at a national and cross-artistic-work level [@dodds2010], there has never been any inquiry into song valence on an individual basis. Though difficult to exactly predict what individual song could be a hit, it is very possible to wean out insight from previously released music to statistically learn the most important elements of a great song. 
+One way to measure how popular a song is through the 'valence' or perceived energy of a song.[investigate the motivation here]. Measuring valence has been done at a national and cross-artistic-work level [@dodds2010], but I investigate solely song valence on an individual basis. Though difficult to exactly predict what individual song could be a hit, it is very possible to wean out insight from previously released music to statistically learn the most important elements of a great song. 
 
 Using data from Spotify's API, I construct a linear model of valence or "energy", using the discographies of the ten most popular artists [find a source] of every particular genre in every decade since 1950. I find that [there are interesting things to be found...]. Blah Blah Blah. 
 
@@ -109,7 +111,7 @@ In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. Th
 
 @fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
 
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
+@fig-stanareyouokay-2 is a hat plot. It shows... This suggests...
 
 
 
@@ -118,4 +120,6 @@ In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. Th
 
 # References
 
+---
 
+---
