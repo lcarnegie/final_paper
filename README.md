@@ -1,14 +1,14 @@
-# The Effect of GDP Fluctuations on the Danceability of Music 
+# What Keeps Us Listening? Exploring the Determinants of Popularity on Spotify. 
 
 ## Overview
 
-This paper explores the relationship between fluctuations in the United States' Gross Domestic Product and the danceability/happiness of music produced by American artists. We investigate 50 years of album and GDP data. 
+Musicians frequently wonder what musical elements make their songs popular. This study takes a first step in using audio data from the discographies of Billboard's top 100 artists, accessed through the Spotify API, to statistically analyze which specific audio features and qualities have the most impact on a song's assigned "popularity score".
 
 ## File Structure
 
 The repo is structured as:
 
--   `data/raw_data` contains the raw data as obtained from Spotify and FRED.
+-   `data/raw_data` contains the raw data as obtained from the Spotify API using spotifyr.
 -   `data/analysis_data` contains the cleaned dataset that was constructed.
 -   `model` contains fitted models. 
 -   `other` contains relevant literature, details about LLM chat interactions, and rough sketches.
@@ -23,4 +23,4 @@ Here is a quick guide to reproducing my graphs and tables.
 
 ## Statement on LLM usage
 
-Aspects of my R code and paper were written and edited with the assistance of Large Language Models, in particular Claude-2 and GPT-4 (Microsoft Copilot). The chat history with both models are available in inputs/llms
+Aspects of my R code and paper were written and edited with the assistance of Large Language Models, in particular Claude-3 Haiku (Claude.ai) and GPT-4 (ChatGPT). The chat history with both models are available in inputs/llms. 
