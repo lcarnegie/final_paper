@@ -2,7 +2,7 @@
 
 ## Overview
 
-Musicians frequently wonder what musical elements make their songs popular. This study takes a first step in using audio data from the discographies of Billboard's top 100 artists, accessed through the Spotify API, to statistically analyze which specific audio features and qualities have the most impact on a song's assigned "popularity score".
+Musicians frequently wonder what musical elements make their songs popular. This paper uses audio data from the discographies of Billboard's top 100 artists, accessed through the Spotify API, to analyze which, if any, specific audio features and qualities have an impact on a song's assigned "popularity score".
 
 ## File Structure
 
