@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from Spotify and FRED
+# Purpose: Downloads and saves data from the Spotify API
 # Author: Luca Carnegie
 # Date: 28 March 2023
 # Contact: luca.carnegie@mail.utoronto.ca
@@ -9,26 +9,30 @@
 
 #### Workspace setup ####
 library(tidyverse)
+library(rvest)
 library(spotifyr)
-library(eFRED)
 
-# [...UPDATE THIS...]
+## Scrape the Greatest of All Time Hot 100 Artists from Billboard and store them in a vector.
 
-#### Download Spotify Data for songs released since  ####
+raw_data <-
+  read_html(
+    "https://www.billboard.com/charts/greatest-hot-100-artists/"
+  )
 
-beyonce <- get_artist_audio_features("beyonce")
-saveRDS(beyonce, "data/raw_data/beyonce.rds")
+write(as.character(raw_data), "data/rawdata/greatestartists.html")
 
-beyonce <- 
-  readRDS(here::here("data/raw_data/beyonce.rds"))
+raw_data <- 
 
-beyonce
+names <- raw_data |> html_elements("h3") |> html_text() |> head(100)
+
+clean_names <- trimws(gsub("\\s+", " ", names))
+
+clean_names
 
 
+## For each artist in the vector, call the Spotify API for artist's top tracks and for audio features
 
-
-## Download FRED Data
-
+## Save each dataset as .csv or parquet? 
 
 
 

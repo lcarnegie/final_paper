@@ -1,9 +1,9 @@
 ---
 title: "The Anatomy of a Hit: Statistically Learning from the Best"
-subtitle: "Modeling the most impactful elements of the most successful musicians."
+subtitle: "Modeling the most impactful elements of the most popular musicians."
 author: 
   - Luca Carnegie
-thanks: "Code and data are available at: https://github.com/lcarnegie/valence-modeling."
+thanks: "Code and data are available at: https://github.com/lcarnegie/popularity-modeling."
 date: April 18 2024
 date-format: long
 abstract: "We attempt to do some interesting things with models and music - stay tuned!"
@@ -30,7 +30,7 @@ library(spotifyr)
 
 # Introduction
 
-Throughout the history of the music industry, musicians successful or not have always pined for one thing - writing a hit and making it big. However, for large music firms, taking on musicians that have yet to generate considerable popularity is an large risk, since they are often gambling on an unknown je ne sais quoi, and often, any given artist is more likely to not produce a hit than produce a hit; this is easily shown through the presence of a few small "superstars" that consistently dominate the music market [@rosen1981]. This poses an interesting question for artists vying to become that superstar: what does make a song a "hit"? 
+Throughout the history of the music industry, musicians successful or not have always pined for one thing - writing their first hit and making it big. However, for large music firms, taking on musicians that have yet to generate considerable popularity is a large risk, since they are often gambling on an unknown je ne sais quoi, and often, any given artist is more likely to not produce a hit than produce a hit; this is easily shown through the presence of a few small "superstars" that consistently dominate the music market [@rosen1981]. This poses an interesting question for artists vying to become that superstar: what does make a song a "hit"? 
 
 One way to measure how popular a song is through the 'valence' or perceived energy of a song.[investigate the motivation here]. Measuring valence has been done at a national and cross-artistic-work level [@dodds2010], but I investigate solely song valence on an individual basis. Though difficult to exactly predict what individual song could be a hit, it is very possible to wean out insight from previously released music to statistically learn the most important elements of a great song. 
 
