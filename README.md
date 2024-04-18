@@ -23,4 +23,10 @@ Here is a quick guide to reproducing my graphs and tables.
 
 ## Statement on LLM usage
 
-Aspects of my R code and paper were written and edited with the assistance of Large Language Models, in particular Claude-3 Haiku (Claude.ai) and GPT-4 (ChatGPT). The chat history with both models are available in inputs/llms. 
+Aspects of my R code and paper were written and edited with the assistance of Large Language Models, in particular Claude-3 Haiku (Claude.ai) and GPT-4 (ChatGPT). 
+
+Claude-3 was used for:
+
+GPT-4 was used for:  
+
+The chat history with both models are available in inputs/llms. 
