@@ -1,4 +1,4 @@
-# What Keeps Us Listening? Exploring the Determinants of Popularity on Spotify. 
+# The Anatomy of a Hit: Statistically Learning from the Best
 
 ## Overview
 
