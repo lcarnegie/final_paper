@@ -1,8 +1,8 @@
-# What Keeps Us Listening? Exploring the Determinants of Popularity on Spotify. 
+# The Anatomy of a Hit: Statistically Learning from the Best
 
 ## Overview
 
-Musicians frequently wonder what musical elements make their songs popular. This study takes a first step in using audio data from the discographies of Billboard's top 100 artists, accessed through the Spotify API, to statistically analyze which specific audio features and qualities have the most impact on a song's assigned "popularity score".
+Musicians frequently wonder what parts of their compositions make their songs popular. This paper uses Spotify-generated metrics from the discographies of Billboard's top 100 artists, accessed through the Spotify API, to analyze which, if any, specific audio qualities have an impact on a song's assigned popularity score.
 
 ## File Structure
 
@@ -23,4 +23,10 @@ Here is a quick guide to reproducing my graphs and tables.
 
 ## Statement on LLM usage
 
-Aspects of my R code and paper were written and edited with the assistance of Large Language Models, in particular Claude-3 Haiku (Claude.ai) and GPT-4 (ChatGPT). The chat history with both models are available in inputs/llms. 
+Aspects of my R code and paper were written and edited with the assistance of Large Language Models, in particular Claude-3 Haiku (Claude.ai) and GPT-4 (ChatGPT). 
+
+Claude-3 was used for:
+
+GPT-4 was used for:  
+
+The chat history with both models are available in inputs/llms. 
