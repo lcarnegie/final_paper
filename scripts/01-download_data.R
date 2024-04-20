@@ -10,35 +10,66 @@
 #### Workspace setup ####
 library(tidyverse)
 library(rvest)
+library(xml2)
 library(spotifyr)
+library(usethis)
 
-## Scrape the Greatest of All Time Hot 100 Artists from Billboard and store them in a vector.
+#### Download Data ####
+
+# Scrape the Greatest of All Time Hot 100 Artists from Billboard and store them in a vector.
 
 raw_data <-
   read_html(
     "https://www.billboard.com/charts/greatest-hot-100-artists/"
   )
 
-write(as.character(raw_data), "data/rawdata/greatestartists.html")
+write_html(raw_data, 'data/raw_data/greatest100.html')
 
-raw_data <- 
+raw_data <- read_html('data/raw_data/greatest100.html')
 
-names <- raw_data |> html_elements("h3") |> html_text() |> head(100)
+names <- raw_data |> 
+          html_elements("h3") |> 
+          html_text() |> 
+          head(100)
 
-clean_names <- trimws(gsub("\\s+", " ", names))
+artists <- trimws(gsub("\\s+", " ", names))
 
-clean_names
+artists <- trimws(gsub("/", " and ", names))
 
 
-## For each artist in the vector, call the Spotify API for artist's top tracks and for audio features
+# Take the list of artists and get data for each one
 
-## Save each dataset as .csv or parquet? 
+# Initialize lists to store tibbles for each artist
+artist_audio_features_list <- list()
+artist_top_tracks_list <- list()
 
+# Loop through each artist and store their data
+for (artist_name in artists) {
+  # Get audio features
+  audio_features <- get_artist_audio_features(artist_name)
+  # Extract artist_id and use it to get top tracks
+  artist_id <- audio_features$artist_id[1] # Assuming 'artist_id' is correctly named and not null
+  
+  # Get top tracks for the US market
+  top_tracks <- get_artist_top_tracks(artist_id, market = "US")
+  
+  # Store data frames in respective lists
+  artist_audio_features_list[[artist_name]] <- audio_features
+  artist_top_tracks_list[[artist_name]] <- top_tracks
+  
+  Sys.sleep(sample(0:12)) #Stop for a random time to not get kicked out of API
+  print(paste("Got", artist_name, "'s data"))
+}
+
+
+# Merge lists of tibbles into single tibbles
+audio_features_tibble <- bind_rows(artist_audio_features_list, .id = "Artist_Name")
+top_tracks_tibble <- bind_rows(artist_top_tracks_list, .id = "Artist_Name")
 
 
 #### Save data ####
-# [...UPDATE THIS...]
-# change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(the_raw_data, "inputs/data/raw_data.csv") 
+
+write_csv(audio_features_tibble, "data/raw_data/audio_features.csv")
+write_csv(top_tracks_tibble, "data/raw_data/top_tracks.csv")
 
          

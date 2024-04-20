@@ -10,6 +10,16 @@
 #### Workspace setup ####
 library(tidyverse)
 library(stringi)
+library(ggplot2)
+library(beepr)
+library(broom)
+library(broom.mixed)
+library(knitr)
+library(modelsummary)
+library(purrr)
+library(rstanarm)
+library(testthat)
+library(tidyverse)
 
 
 # Set seed for reproducibility
@@ -36,8 +46,84 @@ simulated_data <- tibble(
 head(simulated_data)
 
 
-## Simulate some graphs
+## Test simulated Data 
 
+# 1. Summary Statistics Check
+summary_stats <- simulated_data |> 
+  summarise(across(everything(), list(mean = mean, sd = sd, min = min, max = max)))
+print(summary_stats)
+
+# 2. Data Integrity Check (Verify that the data types and formats are correct)
+data_types <- sapply(simulated_data, class)
+print(data_types)
+
+# 3. Missing Values Test 
+missing_vals <- sum(is.na(simulated_data))
+print(missing_vals)
+
+# 4. Uniqueness Test
+duplicated_songs <- simulated_data$song |> 
+                           duplicated() |> 
+                           sum()
+
+duplicated_artists <- simulated_data$artist |> 
+                               duplicated() |> 
+                               sum()
+
+print(c(duplicated_songs, duplicated_artists))
+
+# 5. Range Validation Test
+range_checks <- sapply(simulated_data[c("energy", "valence", "danceability", "liveness", "instrumentalness")], 
+                       function(x) all(x >= 0 & x <= 1))
+print(range_checks)
+
+
+## Simulate some graphs (because the API kicked me out lol)
+
+## Liveness
+ggplot(simulated_data, aes(x = liveness)) +
+  geom_histogram(bins = 45, fill = "blue", color = "black") + # You can adjust the number of bins as needed
+  labs(title = "Histogram of Liveness",
+       x = "Liveness",
+       y = "Density") +
+  theme_minimal()
+
+## Popularity
+ggplot(simulated_data, aes(x = popularity)) +
+  geom_histogram(bins = 45, fill = "blue", color = "black") + # Adjust the number of bins as needed
+  labs(title = "Histogram of Popularity",
+       x = "Popularity",
+       y = "Density") +
+  theme_minimal()
+
+# Explicit or Not 
+
+ggplot(simulated_data, aes(x = explicit)) +
+  geom_bar(fill = "blue", color = "black") +
+  labs(title = "Count of Explicit vs Non-Explicit Songs",
+       x = "Explicit",
+       y = "Count") +
+  theme_minimal()
+
+# Try doing a model
+
+sim_run_data_first_model_rstanarm <-
+  stan_glm(
+    formula = popularity ~ energy + valence + danceability + liveness + explicit + instrumentalness + duration_ms, 
+    data = simulated_data,
+    family = gaussian(),
+    prior = normal(location = 0, scale = 2.5),
+    prior_intercept = normal(location = 0, scale = 2.5),
+    prior_aux = exponential(rate = 1),
+    seed = 853
+  )
+
+beep()
+
+saveRDS(
+  sim_run_data_first_model_rstanarm,
+  file = "sim_run_data_first_model_rstanarm.rds"
+)
 
 
 
