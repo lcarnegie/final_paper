@@ -54,11 +54,30 @@ cleaned_ds <- cleaned_audio_features |>
 cleaned_ds <- cleaned_ds |>
   group_by(song_id) |>
   slice_max(order_by = popularity, with_ties = FALSE) |>
-  ungroup()
+  ungroup() |>
+  select(-artist_name.y, -song_name.y) |>
+  clean_names() |>
+  rename(
+    song_name = song_name_x, 
+    artist_name = artist_name_x
+  ) |>
+  select(
+    song_id, 
+    artist_name, 
+    song_name,
+    popularity, 
+    energy, 
+    valence, 
+    danceability, 
+    explicit, 
+    loudness, 
+    duration_ms
+  )
+  
 
 # Check the top entries of the merged dataset to ensure correctness
 head(cleaned_ds)
 
 
 #### Save data ####
-write_csv(cleaned_data, "data/analysis_data/analysis_data.csv")
+write_csv(cleaned_ds, "data/analysis_data/analysis_data.csv")
