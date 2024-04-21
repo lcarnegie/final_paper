@@ -28,25 +28,27 @@ set.seed(2024)
 
 #### Simulate data ####
 
+num_songs <- 100
+
 simulated_data <- tibble(
-  popularity = sample(0:100, 100, replace = TRUE), 
-  song = stri_rand_strings(100, 10), # Random strings of length 10 for song titles
-  artist = stri_rand_strings(100, 7), # Random strings of length 7 for artist names
-  energy = runif(100, 0, 1), # Uniform distribution between 0 and 1
-  valence = runif(100, 0, 1),
-  danceability = runif(100, 0, 1),
-  liveness = runif(100, 0, 1),
-  explicit = sample(0:1, 100, replace = TRUE), # Binary variable, assuming 0 is not explicit, 1 is explicit
-  instrumentalness = runif(100, 0, 1),
-  duration_ms = sample(150000:300000, 100, replace = TRUE), # Duration in milliseconds, example range
-  mode = sample(0:1, 100, replace = TRUE) # Binary variable, assuming 0 is minor, 1 is major
+  popularity = sample(0:100, num_songs, replace = TRUE), 
+  song = stri_rand_strings(num_songs, 10), # Random strings of length 10 for song titles
+  artist = stri_rand_strings(num_songs, 7), # Random strings of length 7 for artist names
+  energy = runif(num_songs, 0, 1), # Uniform distribution between 0 and 1
+  valence = runif(num_songs, 0, 1),
+  danceability = runif(num_songs, 0, 1),
+  liveness = runif(num_songs, 0, 1),
+  explicit = sample(0:1, num_songs, replace = TRUE), # Binary variable, assuming 0 is not explicit, 1 is explicit
+  instrumentalness = runif(num_songs, 0, 1),
+  duration_ms = sample(150000:300000, num_songs, replace = TRUE), # Duration in milliseconds, example range
+  mode = sample(0:1, num_songs, replace = TRUE) # Binary variable, assuming 0 is minor, 1 is major
 )
 
 # View the first few rows of the simulated data
 head(simulated_data)
 
 
-## Test simulated Data 
+## Test simulated Data using TestThat
 
 # 1. Summary Statistics Check
 summary_stats <- simulated_data |> 
@@ -105,6 +107,18 @@ ggplot(simulated_data, aes(x = explicit)) +
        y = "Count") +
   theme_minimal()
 
+
+# energy 
+
+# valence 
+
+# danceability 
+
+# instrumentalness
+
+# duration
+
+
 # Try doing a model
 
 sim_run_data_first_model_rstanarm <-
@@ -124,6 +138,8 @@ saveRDS(
   sim_run_data_first_model_rstanarm,
   file = "sim_run_data_first_model_rstanarm.rds"
 )
+
+modelsummary(sim_run_data_first_model_rstanarm)
 
 
 

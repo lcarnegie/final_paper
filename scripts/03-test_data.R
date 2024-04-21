@@ -10,6 +10,7 @@
 
 #### Workspace setup ####
 library(tidyverse)
-# [...UPDATE THIS...]
+
+## Write the tests using testthat. 
 
 #### Test data ####

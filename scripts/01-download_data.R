@@ -63,13 +63,16 @@ for (artist_name in artists) {
 
 
 # Merge lists of tibbles into single tibbles
-audio_features_tibble <- bind_rows(artist_audio_features_list, .id = "Artist_Name")
-top_tracks_tibble <- bind_rows(artist_top_tracks_list, .id = "Artist_Name")
+audio_features_spotify <- bind_rows(artist_audio_features_list, .id = "Artist_Name")
+top_tracks_tibble_spotify <- bind_rows(artist_top_tracks_list, .id = "Artist_Name")
+
+audio_features <- as_tibble(audio_features_spotify)
+top_tracks <- as_tibble(top_tracks_tibble_spotify)
 
 
 #### Save data ####
 
-write_csv(audio_features_tibble, "data/raw_data/audio_features.csv")
-write_csv(top_tracks_tibble, "data/raw_data/top_tracks.csv")
+write_csv(audio_features, "data/raw_data/audio_features.csv")
+write_csv(top_tracks, "data/raw_data/top_tracks.csv")
 
          
