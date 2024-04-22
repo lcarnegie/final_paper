@@ -15,7 +15,7 @@ library(readr)
 
 
 # Load the dataset
-cleaned_ds <- read_csv("data/analysis_data/analysis_data.csv")
+cleaned_ds <- read_parquet("data/analysis_data/dataset.parquet")
 
 # Begin defining tests
 test_that("Data loads correctly", {
@@ -30,9 +30,9 @@ test_that("Data columns are of correct type", {
   expect_type(cleaned_ds$danceability, "double")
   expect_type(cleaned_ds$explicit, "double")
   expect_type(cleaned_ds$loudness, "double")
-  expect_type(cleaned_ds$duration_ms, "double")
+  expect_type(cleaned_ds$duration_secs, "double")
   expect_type(cleaned_ds$song_id, "character")
-  expect_type(cleaned_ds$popularity, "double")
+  expect_type(cleaned_ds$popularity, "integer")
 })
 
 test_that("Numeric values are within expected ranges", {

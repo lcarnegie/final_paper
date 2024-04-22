@@ -1,9 +1,9 @@
 ---
 title: "The Anatomy of a Hit: Statistically Learning from the Best"
-subtitle: "Modeling the most impactful elements of the most popular musicians."
+subtitle: "An attempt to model"
 author: 
   - Luca Carnegie
-thanks: "Code and data are available at: https://github.com/lcarnegie/popularity-modeling."
+thanks: "Code and data are available at: https://github.com/lcarnegie/popularity-modeling. Special thanks go to Rajan Maghera, Oliver Cao, and Hannah Yu for the support and encouragement. You're all wonderful."
 date: April 18 2024
 date-format: long
 abstract: "We attempt to do some interesting things with models and music - stay tuned!"
@@ -42,9 +42,88 @@ In the streaming era, competition for stardom is at an all-time high. Being cogn
 
 # Data {#sec-data}
 
+## Workflow {#sec-first-point}
+## Source
+## Measurement and Sampling 
+## Variables of Interest 
+### Energy
+
+```{r boilerplate-r-chunk}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: ALIGNMENT
+
+
+```
+
+### Valence
+
+```{r boilerplate-r-chunk}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: ALIGNMENT
+
+
+```
+
+### Danceability
+
+```{r boilerplate-r-chunk}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: ALIGNMENT
+
+
+```
+
+### Explicit Status
+
+```{r boilerplate-r-chunk}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: ALIGNMENT
+
+
+```
+
+### Loudness
+
+```{r boilerplate-r-chunk}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: ALIGNMENT
+
+
+```
+
+
+### Duration 
+
+```{r boilerplate-r-chunk}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: ALIGNMENT
+
+
+```
+
+
 
 # Model
 
+Create a Correl matrix to motivate choosing of variables. 
 
 ## Model set-up
 
@@ -52,12 +131,13 @@ In the streaming era, competition for stardom is at an all-time high. Being cogn
 ### Model justification
 
 
-
 # Results
 
-
+I guess put the results of the model?
 
 # Discussion
+
+What does everything mean?
 
 ## First discussion point {#sec-first-point}
 
@@ -66,8 +146,24 @@ In the streaming era, competition for stardom is at an all-time high. Being cogn
 ## Third discussion point {#sec-third-point}
 
 ## Weaknesses and next steps {#sec-weaknesses-next}
+- Standard errors be huge. That means the regression is very imprecise. One way to
+resolve that would be to get a larger sample size. 
+- Sample size is kind of small - but that's the point? 
+Maybe constructing a fuller dataset with the entire discographies 
+of these people using Spotify's assistance would allow us to get more precise
+estimates of effects. 
+- People could repeat this experiment on a genre-based basis or using different 
+ratings of artists. Perhaps there are genre-specific relationships within other 
+variables in the spotify API that I haven't covered here. 
 
-Weaknesses and next steps should also be included.
+
+\newpage
+
+
+# References
+
+::: {#refs}
+:::
 
 \newpage
 
@@ -75,47 +171,19 @@ Weaknesses and next steps should also be included.
 
 # Appendix {-}
 
+# Model Testing  
 
-# Additional data details
 
-# Model details {#sec-model-details}
 
-## Posterior predictive check
 
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
 
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
 
-```{r}
-# #| eval: true
-# #| echo: false
-# #| message: false
-# #| warning: false
-# #| label: fig-ppcheckandposteriorvsprior
-# #| layout-ncol: 2
-# #| fig-cap: "Examining how the model fits, and is affected by, the data"
-# #| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-# 
-# pp_check(first_model) +
-#   theme_classic() +
-#   theme(legend.position = "bottom")
-# 
-# posterior_vs_prior(first_model) +
-#   theme_minimal() +
-#   scale_color_brewer(palette = "Set1") +
-#   theme(legend.position = "bottom") +
-#   coord_flip()
+```{r boilerplate-r-chunk}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: ALIGNMENT
+
+
 ```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a hat plot. It shows... This suggests...
-
-
-
-\newpage
-
-
-# References

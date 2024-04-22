@@ -10,12 +10,11 @@
 #### Workspace setup ####
 library(tidyverse)
 library(janitor)
-
+library(arrow)
 
 top_tracks <- read.csv("data/raw_data/top_tracks.csv")
 audio_features <- read.csv("data/raw_data/audio_features.csv")
 
-#Get columns from top_tracks
 
 #Clean the two CSVs
 cleaned_top_tracks <- top_tracks |> 
@@ -47,22 +46,29 @@ cleaned_ds <- cleaned_audio_features |>
   # Perform an inner join on 'song_name' to filter only relevant songs from audio features
   inner_join(cleaned_top_tracks, by = "song_id") 
 
-# There were duplicate songs, so drop ones with the lower popularity score 
+# We lose a few songs from each artist in the inner join because of a disconnect 
+# between the top_songs dataset and the audio_features dataset - some songs on the
+# top 10 don't seem to have audio features that are query-able. 
+
+# There were also duplicates, so drop ones with the lower popularity score.  
 # After all, we are interested in what makes a song "more" popular. 
 
-# Remove duplicates by keeping the entry with the highest popularity score
 cleaned_ds <- cleaned_ds |>
   group_by(song_id) |>
-  slice_max(order_by = popularity, with_ties = FALSE) |>
+  slice_max(order_by = popularity, with_ties = FALSE) |> # Remove duplicates 
   ungroup() |>
-  select(-artist_name.y, -song_name.y) |>
+  select(-artist_name.y, -song_name.y) |> #drop artifacts from inner join
   clean_names() |>
+  mutate(
+    duration_ms = duration_ms/1000 #convert to seconds
+  ) |>
   rename(
     song_name = song_name_x, 
-    artist_name = artist_name_x
+    artist_name = artist_name_x,
+    duration_secs = duration_ms
   ) |>
   select(
-    song_id, 
+    song_id, #re-order the list to make it clean.
     artist_name, 
     song_name,
     popularity, 
@@ -71,8 +77,9 @@ cleaned_ds <- cleaned_ds |>
     danceability, 
     explicit, 
     loudness, 
-    duration_ms
+    duration_secs
   )
+  
   
 
 # Check the top entries of the merged dataset to ensure correctness
@@ -80,4 +87,10 @@ head(cleaned_ds)
 
 
 #### Save data ####
-write_csv(cleaned_ds, "data/analysis_data/analysis_data.csv")
+
+# Assume 'cleaned_ds' is your DataFrame that you want to save
+file_path <- "data/analysis_data/dataset.parquet"
+
+# Write the DataFrame to a Parquet file at the specified file path
+write_parquet(cleaned_ds, file_path)
+
