@@ -29,11 +29,11 @@ cleaned_audio_features <- audio_features|>
                           mutate(explicit_ = if_else(explicit, 1, 0)) |>
                           select(artist_name, 
                                  track_name,
-                                 energy,
                                  valence,
                                  danceability,
                                  explicit_,
                                  loudness,
+                                 mode, 
                                  duration_ms
                                  ) |>
                           rename(song_name = track_name) |>
@@ -60,7 +60,8 @@ cleaned_ds <- cleaned_ds |>
   select(-artist_name.y, -song_name.y) |> #drop artifacts from inner join
   clean_names() |>
   mutate(
-    duration_ms = duration_ms/1000 #convert to seconds
+    duration_ms = duration_ms/1000,  #convert to seconds
+    explicit  = as.integer(explicit)
   ) |>
   rename(
     song_name = song_name_x, 
@@ -68,11 +69,10 @@ cleaned_ds <- cleaned_ds |>
     duration_secs = duration_ms
   ) |>
   select(
-    song_id, #re-order the list to make it clean.
     artist_name, 
     song_name,
     popularity, 
-    energy, 
+    mode, 
     valence, 
     danceability, 
     explicit, 

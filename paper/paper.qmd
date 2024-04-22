@@ -1,9 +1,9 @@
 ---
 title: "The Anatomy of a Hit: Statistically Learning from the Best"
-subtitle: "An attempt to model"
+subtitle: "Modeling Popularity on Spotify using API Audio Features"
 author: 
   - Luca Carnegie
-thanks: "Code and data are available at: https://github.com/lcarnegie/popularity-modeling. Special thanks go to Rajan Maghera, Oliver Cao, and Hannah Yu for the support and encouragement. You're all wonderful."
+thanks: "Code and data are available at: https://github.com/lcarnegie/popularity-modeling. Thank you, first, to Michaela Drouillard for your insights and help. Special hat tips go to Rajan Maghera and Oliver Cao for your support and encouragement. You're both awesome!"
 date: April 18 2024
 date-format: long
 abstract: "We attempt to do some interesting things with models and music - stay tuned!"
@@ -15,13 +15,19 @@ nocite: |
   @*
 ---
 
-```{r}
+```{r setup}
 #| include: false
 #| warning: false
 #| message: false
 
 library(tidyverse)
-library(spotifyr)
+library(ggplot2)
+library(arrow)
+library(kableExtra)
+library(knitr)
+
+
+spotify_data <- read_parquet("../data/analysis_data/dataset.parquet")
 
 
 ```
@@ -32,33 +38,89 @@ library(spotifyr)
 
 Throughout the history of the music industry, musicians successful or not have always pined for one thing - writing their first hit and making it big. However, for large music firms, taking on musicians that have yet to generate considerable popularity is a large risk, since they are often gambling on an unknown je ne sais quoi, and often, any given artist is more likely to not produce a hit than produce a hit; this is easily shown through the presence of a few small "superstars" that consistently dominate the music market [@rosen1981]. This poses an interesting question for artists vying to become that superstar: what does make a song a "hit"? 
 
-One way to measure how popular a song is through the 'valence' or perceived energy of a song.[investigate the motivation here]. Measuring valence has been done at a national and cross-artistic-work level [@dodds2010], but I investigate solely song valence on an individual basis. Though difficult to exactly predict what individual song could be a hit, it is very possible to wean out insight from previously released music to statistically learn the most important elements of a great song. 
+One way to measure how popular a song is through the 'valence' or perceived energy of a song.[investigate the motivation here]. Measuring the effects of specific features of art on populations has been done at a national and cross-artistic-work level [@dodds2010], but I investigate solely song valence on an individual basis. Though difficult to exactly predict what individual song could be a hit, it is very possible to wean out insight from previously released music to statistically learn the most important elements of a great song. 
 
 Using data from Spotify's API, I construct a linear model of valence or "energy", using the discographies of the ten most popular artists [find a source] of every particular genre in every decade since 1950. I find that [there are interesting things to be found...]. Blah Blah Blah. 
 
 In the streaming era, competition for stardom is at an all-time high. Being cognizant of the most impactful elements could encourage artists to focus on what truly works to generate hits. This may allow them to carve their own paths outside of the controlling nature of a record contract [@burke1997]. These insights could be used to give more knowledge and freedom to artists to be able to strike out on their own and carve their own destinies in the world of music. 
 
 
-
 # Data {#sec-data}
 
-## Workflow {#sec-first-point}
-## Source
-## Measurement and Sampling 
-## Variables of Interest 
-### Energy
+This study was produced using a workflow based in R  [@citeR], with several additional packages facilitating data collection and analysis. Data was initially simulated using the tidyverse [@tidyverse], dplyr [@dplyr] and stringi [@stringi] packages. The names of Billboard Greatest Top 100 Artists [@greatestofhot100] were scraped using rvest [@rvest], saved with xml2 [@xml2], then fed into spotifyr [@spotifyr] to collect the audio and popularity data from the Spotify API. The tidyverse was further used to clean and merge the collected data into a single dataset and was saved in a parquet file using arrow [@arrow]. Finally, the data was visualized and summarized with ggplot2 [@ggplot2] and modelsummary [@modelsummary]. 
 
-```{r boilerplate-r-chunk}
+
+## Measurement and Sampling 
+
+To determine which artists' discographies to sample, I used Billboard Magazine's "Greatest of All Time Hot 100 Artists" list to isolate artists whose work has consistently performed the best on the Billboard Hot 100. First compiled in 1958, the Hot 100 is a weekly ranking that lists the most popular songs in the United States, tracking all music genres. The rankings are calculated from a combination of radio plays, song sales and streams/views on platforms like Spotify and YouTube [@aboutbillboard]. Given the ranking's focus on music consumption, artists' whose music make it onto this list are expected to have discographies that garner a mass appeal and popularity, and thus have qualities that can be analyzed for patterns that could describe the elements of a "hit". 
+
+To obtain quantitative measures of the elements in question, I turned to Spotify and it's API, which I accessed through the spotifyr R package. Through a free account, anyone can access fairly granular data on various audio features for most songs in their library, from tempo, to key, to generated metrics such as "danceability" and "speechiness", which are inferred algorithmically from the recorded audio features. 
+
+
+A consolidated quantitative measure of the popularity of these artists' songs was also obtained through the Spotify API. According to Spotify's documentation, 
+
+>The popularity is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how recent those plays are... [It is important to note that] the popularity value may lag actual popularity by a few days: the value is not updated in real time.
+
+Considering this, we can interpret that the popularity score provides a useful measure of a song's enduring popularity. Songs with high scores continue to be played frequently, even long after their release. Since Spotify is the leading music streaming service in the USA, with the largest customer base, their popularity metrics can reasonably align with the Billboard Top 100 rankings. This allows us to assess the relative lasting popularity of various songs using a relatively robust metric.  
+
+## Data Source
+
+Other existing datasets were considered before conducting this analysis. In particular, Pham, Kyauk and Park's prior machine learning work using the Million Song dataset [@CITE THIS] created some contention for creating a new dataset. However, one key issue with the Million Song dataset is that without a robust measure for popularity, there is no way to infer meaningful relationships. Creating measures that are a good representation would require effort that has already been expended by Spotify. 
+
+The appeals of using Spotify's metrics over the Million Song dataset are twofold: first, most songs on Spotify have a quantitative measure of popularity attached to them; second, this research is interested only in "the best" artists - if we regress the characteristics of the Million song dataset, there would be little meaningful information to be extracted, since parameters would be based on a large amount of data where most songs would not be popular, making them effectively useless in attempting to infer relationships between song features and popularity. 
+
+The final dataset, after cleaning, is made up of 9 variables, with 773 observations (each song is an observation). To avoid issues with multicollinearity in audio features and confounding due to mismatching between sources, I deliberately prioritized using Spotify's algorithmically generated metric. To further scope my analysis and modelling, I narrowed my feature set provided by Spotify to energy, valence, danceability, presence of explicit lyrics, loudness, and song duration. 
+
+
+## Variables of Interest 
+
+There are 7 quantitative variables that are of interest in my constructed dataset.
+
+CORRECT THE GRAPHS' DETAILS. 
+
+### Popularity 
+
+```{r popularity-histogram}
 #| message: false
 #| echo: false
 #| warning: false
 #| fig-cap: CAPTION
-#| fig-align: ALIGNMENT
+#| fig-align: center
 
+ggplot(spotify_data, aes(x = popularity)) +
+  geom_histogram(bins = 12, fill = "blue", color = "black") + 
+  labs(title = "Histogram of Popularity",
+       x = "Popularity",
+       y = "Density") +
+  theme_minimal() + 
+  theme(plot.title.position = "plot",
+        plot.title = element_text(hjust = 0.5))
 
 ```
 
+
 ### Valence
+
+```{r scatter-valence}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: center
+
+# Scatter plot of Popularity vs. Energy
+ggplot(spotify_data, aes(x = valence, y = popularity)) +
+  geom_point(alpha = 0.6, color = "coral") +
+  ggtitle("Popularity vs. Valence") +
+  xlab("Valence") +
+  ylab("Popularity Score") +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(hjust = 0.5)
+  )
+
+
+
+```
 
 ```{r boilerplate-r-chunk}
 #| message: false
@@ -72,36 +134,159 @@ In the streaming era, competition for stardom is at an all-time high. Being cogn
 
 ### Danceability
 
-```{r boilerplate-r-chunk}
+```{r scatter-danceability}
 #| message: false
 #| echo: false
 #| warning: false
 #| fig-cap: CAPTION
-#| fig-align: ALIGNMENT
+#| fig-align: center
 
+# Scatter plot of Popularity vs. Energy
+ggplot(spotify_data, aes(x = danceability, y = popularity)) +
+  geom_point(alpha = 0.6, color = "coral") +
+  ggtitle("Popularity vs. Danceability") +
+  xlab("Danceability") +
+  ylab("Popularity Score") +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(hjust = 0.5)
+  )
+
+
+
+```
+
+```{r danceability-histogram}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: center
+
+ggplot(spotify_data, aes(x = danceability * 100)) +
+  geom_histogram(bins = 20, fill = "blue", color = "black") + 
+  labs(title = "Histogram of Danceability",
+       x = "Danceability (0-100%)",
+       y = "Density") +
+  theme_minimal() + 
+  theme(plot.title.position = "plot",
+        plot.title = element_text(hjust = 0.5))
+
+```
+
+### Mode
+
+```{r maj-min-barchart}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: center
+
+# Summarizing the data to count explicit vs. non-explicit songs
+song_counts <- spotify_data |>
+  group_by(mode) |>
+  summarise(count = n()) |>
+  mutate(explicit = if_else(mode == 1, "Major", "Minor"))
+
+# Plotting the counts of explicit and non-explicit songs
+ggplot(song_counts, aes(x = mode, y = count, fill = explicit)) +
+  geom_col() +  # geom_col is used for bar plots with predefined data summaries
+  ggtitle("Count of Major vs. Minor Songs") +
+  xlab("Song Mode") +
+  ylab("Number of Songs") +
+  scale_fill_manual(values = c("Major" = "skyblue", "Minor" = "salmon")) +
+  theme_minimal() +  # Adds a minimal theme for better aesthetics
+  theme(
+    axis.text.x = element_blank(),  # Hides the x-axis text
+    axis.ticks.x = element_blank(), 
+    plot.title.position = "plot",
+    plot.title = element_text(hjust = 0.5)
+  )
+
+```
+```{r density-plot}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: center
+
+# Comparing popularity distributions for different modes
+ggplot(spotify_data, aes(x = popularity, fill = as.factor(mode))) +
+  geom_density(alpha = 0.5) +
+  ggtitle("Popularity Distribution by Mode") +
+  xlab("Popularity Score") +
+  ylab("Density") +
+  scale_fill_manual(values = c("dodgerblue", "gold"), labels = c("Minor", "Major")) +
+  theme(
+    plot.title = element_text(hjust = 0.5)
+  )
+
+
+```
+```{r EVALUATE}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: center
+
+ggplot(spotify_data, aes(x = as.factor(mode), y = popularity, fill = as.factor(mode)))+
+  geom_boxplot() +
+  ggtitle("Effect of Song Mode on Popularity") +
+  xlab("Mode (0 = Minor Key, 1 = Major Key)") +
+  ylab("Popularity Score") +
+  scale_fill_manual(values = c("gray", "tomato")) + 
+  theme(plot.title.position = "plot",
+        plot.title = element_text(hjust = 0.5))
 
 ```
 
 ### Explicit Status
 
-```{r boilerplate-r-chunk}
+```{r explicit-bar-chart}
 #| message: false
 #| echo: false
 #| warning: false
 #| fig-cap: CAPTION
-#| fig-align: ALIGNMENT
+#| fig-align: center
 
+# Summarizing the data to count explicit vs. non-explicit songs
+song_counts <- spotify_data |>
+  group_by(explicit) |>
+  summarise(count = n()) |>
+  mutate(explicit = if_else(explicit == 1, "Explicit", "Not Explicit"))
+
+# Plotting the counts of explicit and non-explicit songs
+ggplot(song_counts, aes(x = explicit, y = count, fill = explicit)) +
+  geom_col() +  # geom_col is used for bar plots with predefined data summaries
+  ggtitle("Count of Explicit vs. Non-Explicit Songs") +
+  xlab("Song Type") +
+  ylab("Number of Songs") +
+  scale_fill_manual(values = c("Not Explicit" = "skyblue", "Explicit" = "salmon")) +
+  theme_minimal()  # Adds a minimal theme for better aesthetics
 
 ```
 
 ### Loudness
 
-```{r boilerplate-r-chunk}
+```{r scatter-loudness}
 #| message: false
 #| echo: false
 #| warning: false
 #| fig-cap: CAPTION
-#| fig-align: ALIGNMENT
+#| fig-align: center
+
+# Scatter plot of Popularity vs. Energy
+ggplot(spotify_data, aes(x = loudness, y = popularity)) +
+  geom_point(alpha = 0.6, color = "coral") +
+  ggtitle("Popularity vs. Loudness") +
+  xlab("Loudness") +
+  ylab("Popularity Score") +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(hjust = 0.5)
+  )
+
 
 
 ```
@@ -109,21 +294,50 @@ In the streaming era, competition for stardom is at an all-time high. Being cogn
 
 ### Duration 
 
-```{r boilerplate-r-chunk}
+```{r duration-histogram}
 #| message: false
 #| echo: false
 #| warning: false
 #| fig-cap: CAPTION
-#| fig-align: ALIGNMENT
+#| fig-align: center
 
+ggplot(spotify_data, aes(x = duration_secs/60)) +
+  geom_histogram(bins = 20, fill = "blue", color = "black") + 
+  labs(title = "Histogram of Song Duration (Mins)",
+       x = "Duration (mins)",
+       y = "Density") +
+  theme_minimal() + 
+  theme(plot.title.position = "plot",
+        plot.title = element_text(hjust = 0.5))
+
+```
+
+```{r EVALUATE}
+#| message: false
+#| echo: false
+#| warning: false
+#| fig-cap: CAPTION
+#| fig-align: center
+
+ggplot(spotify_data, aes(x = as.factor(explicit), y = popularity, fill = as.factor(explicit))) +
+  geom_boxplot() +
+  ggtitle("Effect of Explicit Content on Popularity") +
+  xlab("Explicit Content (0 = No, 1 = Yes)") +
+  ylab("Popularity Score") +
+  scale_fill_manual(values = c("gray", "tomato"))
 
 ```
 
 
 
+
+
+
+
+
+
 # Model
 
-Create a Correl matrix to motivate choosing of variables. 
 
 ## Model set-up
 
@@ -148,6 +362,7 @@ What does everything mean?
 ## Weaknesses and next steps {#sec-weaknesses-next}
 - Standard errors be huge. That means the regression is very imprecise. One way to
 resolve that would be to get a larger sample size. 
+- Billboard Data finishes in 2015: getting a more updated list from Billboard or somewhere else would be helpful. 
 - Sample size is kind of small - but that's the point? 
 Maybe constructing a fuller dataset with the entire discographies 
 of these people using Spotify's assistance would allow us to get more precise
@@ -184,6 +399,9 @@ variables in the spotify API that I haven't covered here.
 #| warning: false
 #| fig-cap: CAPTION
 #| fig-align: ALIGNMENT
+
+  theme(plot.title.position = "plot",
+        plot.title = element_text(hjust = 0.5))
 
 
 ```

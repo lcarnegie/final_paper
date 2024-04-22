@@ -9,19 +9,21 @@
 
 #### Workspace setup ####
 library(tidyverse)
-library(rstanarm)
-library(beepr)
 library(modelsummary)
 
 #### Read data ####
 analysis_data <- read_parquet("data/analysis_data/dataset.parquet")
+
+numeric_data <- analysis_data |> select(-song_id, -song_name, -artist_name)
+
+cor(numeric_data)
 
 
 ### Model data ####
 
 model <-
   lm(
-    popularity ~ energy + valence + danceability + explicit + loudness + duration_secs,
+    popularity ~  valence + danceability + explicit + mode + loudness + duration_secs,
     data = analysis_data
   )
 
