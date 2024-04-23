@@ -11,13 +11,11 @@
 library(tidyverse)
 library(stringi)
 library(ggplot2)
-library(beepr)
 library(broom)
 library(broom.mixed)
 library(knitr)
 library(modelsummary)
 library(purrr)
-library(rstanarm)
 library(testthat)
 library(tidyverse)
 
@@ -82,13 +80,6 @@ print(range_checks)
 
 ## Simulate some graphs (because the API kicked me out lol)
 
-## Liveness
-ggplot(simulated_data, aes(x = liveness)) +
-  geom_histogram(bins = 45, fill = "blue", color = "black") + # You can adjust the number of bins as needed
-  labs(title = "Histogram of Liveness",
-       x = "Liveness",
-       y = "Density") +
-  theme_minimal()
 
 ## Popularity
 ggplot(simulated_data, aes(x = popularity)) +
@@ -114,9 +105,14 @@ ggplot(simulated_data, aes(x = explicit)) +
 
 # danceability 
 
-# instrumentalness
-
 # duration
+
+ggplot(simulated_data, aes(x = duration_secs)) +
+  geom_histogram(bins = 45, fill = "blue", color = "black") + # Adjust the number of bins as needed
+  labs(title = "Histogram of Popularity",
+       x = "Popularity",
+       y = "Density") +
+  theme_minimal()
 
 
 # Try doing a model
