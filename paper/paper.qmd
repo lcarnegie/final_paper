@@ -70,7 +70,7 @@ For this analysis, the popularity score, valence (musical 'positivity'), danceab
 #| message: false
 #| echo: false
 #| warning: false
-#| tbl-cap: Popularity Scores and Audio Features
+#| tbl-cap: Sample of Dataset
 #| fig-align: center
 
 #fix formatting before submitting
