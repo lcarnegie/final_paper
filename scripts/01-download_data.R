@@ -39,12 +39,13 @@ artists <- trimws(gsub("/", " and ", names))
 
 # Take the list of artists and get data for each one
 
-# Initialize lists to store tibbles for each artist
+# Initialize lists to store the tibbles for each artist
 artist_audio_features_list <- list()
 artist_top_tracks_list <- list()
 
 # Loop through each artist and store their data
 for (artist_name in artists) {
+  
   # Get audio features
   audio_features <- get_artist_audio_features(artist_name)
   # Extract artist_id and use it to get top tracks

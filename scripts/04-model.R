@@ -14,25 +14,20 @@ library(modelsummary)
 #### Read data ####
 analysis_data <- read_parquet("data/analysis_data/dataset.parquet")
 
-numeric_data <- analysis_data |> select(-song_id, -song_name, -artist_name)
-
-cor(numeric_data)
+numeric_data <- analysis_data |> select(-song_name, -artist_name)
 
 
 ### Model data ####
 
 model <-
   lm(
-    popularity ~  valence + danceability + explicit + mode + loudness + duration_secs,
-    data = analysis_data
+    popularity ~ valence + danceability + mode + explicit + loudness + duration_secs,
+    data = numeric_data
   )
 
-summary(sim_run_data_first_model)
 
 #### Save model ####
 saveRDS(
-  first_model,
-  file = "models/first_model.rds"
+  model,
+  file = "models/model.rds"
 )
-
-

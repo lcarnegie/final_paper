@@ -57,11 +57,11 @@ The paper is structured as follows: [@sec-data] provides a detailed overview of 
 
 The Billboard Hot 100 ranks the most popular U.S. songs weekly based on radio plays, sales, and streaming [@aboutbillboard]. Artists with songs frequently on this chart should have mass appeal, motivating the analysis of elements that define the popularity of those "hits". Using Billboard also scopes this analysis to solely the US market
 
-Unlike other datasets like The Million Song dataset used by Pham et al., Spotify's web API provides ready-made quantitative audio features (tempo, key, danceability, etc.) as well as calculated popularity score based on recent and total play counts for artists' songs, facilitating analysis of popularity determinants. 
+Unlike other datasets like The Million Song dataset used by Pham et al., Spotify's web API provides ready-made quantitative audio features (tempo, key, danceability, etc.) as well as calculated popularity score based on recent and total play counts for artists' songs, facilitating analysis of the determinants of a song's popularity. 
 
-Since the popularity score is based on both recency of streams and total number of streams, continually high scores indicate frequent plays long after release. This means this score can be thought of measuring a song's enduring popularity. As the leading U.S. music streamer, Spotify's metrics can reasonably align with Billboard rankings, providing a relatively robust measure of a song's lasting popularity, which is crucial in attempting to infer the elements that make up a "hit".  
+Since the Spotify popularity score is based on both recency of streams and total number of streams, continually high scores indicate frequent plays long after release. This score can then be thought of measuring a song's enduring popularity, whose qualities would be of interest to up and coming artists. As the leading U.S. music streamer, Spotify's metrics can reasonably align with Billboard rankings, providing a relatively robust measure of a song's lasting popularity, which is crucial in attempting to infer the elements that make up a "hit".  
 
-To analyze the audio feature determinants of popularity, I used R [@citeR], the tidyverse [@tidyverse] and related packages. Billboard's "Greatest of All Time Hot 100 Artists" [@greatestofhot100] list identified popular artists. The audio features of the Billboard artists' songs and popularity data were then acquired from Spotify's API via the spotifyr [@spotifyr] package. Spotify data was current as of 2024, while Billboard rankings were from 2015. The data was cleaned using the dplyr [@dplyr] and janitor [@janitor] packages and saved using arrow [@arrow]. Variables were chosen based on expected impact on popularity, resulting in a dataset with 773 songs. 
+To acquire, clean and analyze the data, I used R [@citeR], the tidyverse [@tidyverse] and related software packages. Billboard's "Greatest of All Time Hot 100 Artists" [@greatestofhot100] list identified popular artists. The audio features of the Billboard artists' songs and popularity data were then downloaded from Spotify's API via the spotifyr [@spotifyr] package. Spotify data was current as of 2024, while Billboard rankings were from 2015. The data was cleaned using the dplyr [@dplyr] and janitor [@janitor] packages and saved using arrow [@arrow]. Variables were chosen based on expected impact on popularity, resulting in a dataset with 773 songs. 
 
 For this analysis, the popularity score, valence (musical 'positivity'), danceability, mode (major or minor), presence of explicit lyrics, loudness, and song duration were made of interest. A sample of the cleaned dataset is shown in [@tbl-sample]. This and other tables were created using the knitr [@knitr] packages. Visualizations and modelling summaries used ggplot2 [@ggplot2] and modelsummary [@modelsummary].
 
@@ -387,7 +387,9 @@ For a particular variable, a low p-value for the regression coefficient would pr
 
 The equation for our linear model can be written as follows: 
 
+<center>
 $S = \beta_0 + \beta_1V + \beta_2D + \beta_3M + \beta_4E + \beta_5L + \beta_6T + \epsilon$, 
+</center>
 
 where, 
 
@@ -429,7 +431,8 @@ In the linear model, the dependent variable $S$ represents the Spotify popularit
 
 By running our model with the data collected from Spotify, we get the following results:
 
-\newpage
+\newpage 
+
 ```{r model}
 #| message: false
 #| echo: false
@@ -450,14 +453,14 @@ coefficients_df <- tibble(
   Statistic = model_summary$coefficients[, "t value"],
   `P-value` = model_summary$coefficients[, "Pr(>|t|)"]
 )
-
 kable(coefficients_df, 
       digits = 2, 
+      format = "html",
       caption = "Linear Model of Spotify Popularity Summary"
     )
 ```
 
-The intercept (65.85) represents the predicted value of the dependent variable when all the independent variables are set to zero. However, since most of the predictors are likely scaled or binary, the interpretation of the intercept is not very meaningful.
+The intercept (65.85) represents the predicted value of the dependent variable when all the independent variables are set to zero. However, since most of the predictors are both scaled or binary, the interpretation of the intercept is not very meaningful in the context of this analysis.
 
 Valence, which measures the emotional positivity of a song on a scale of 0 to 1, has a negative coefficient (-10.96). This suggests that, holding other variables constant, an increase in valence by one unit is associated with a decrease in the predicted Spotify popularity score by approximately 11 points.
 
@@ -550,7 +553,7 @@ effect_plot(model,
 
 ```
 
-Duration_secs, likely representing the song duration in seconds, has a positive coefficient (0.01) with a p-value of 0.10, which is marginally significant. This suggests that, holding other variables constant, an increase in song duration by one second is associated with a slight increase in the predicted popularity score by 0.01 points.
+Duration has a positive coefficient (0.01) with a p-value of 0.10, which is marginally significant. This suggests that, holding other variables constant, an increase in song duration by one second is associated with a slight increase in the predicted popularity score by 0.01 points.
 
 ```{r effect-plot-duration}
 #| message: false
@@ -570,21 +573,33 @@ effect_plot(model,
 
 Taken together, the regression results indicate that danceability, explicit lyrics, loudness, and, to a lesser extent, song duration are associated with higher Spotify popularity scores, while valence (emotional positivity) has a negative association. The musical mode does not appear to have a significant effect on popularity after accounting for other predictors.
 
-
-
 # Discussion {#sec-discussion}
 
+## Impact of Results {#sec-first-point}
 
-## Considerations of Spotify Metrics {#sec-first-point}
+These findings offer valuable insights into the extensive efforts undertaken by music technology companies like Spotify to quantify and understand the multifaceted dynamics of music culture. While attempting to reduce the inherently complex artistic medium of music to quantitative measures may appear overly reductive or naive, our analysis demonstrates that even with relatively basic domain knowledge of the music industry, one can uncover meaningful trends and patterns in previously released and publicly consumed music. This realization speaks to the fundamental human propensity for discerning patterns, which extends to our preferences and consumption behaviors in domains as subjective as music, as evidenced by the popularity metrics on the Spotify platform.
 
-## Impact of Results {#sec-second-point}
+Furthermore, the analysis underscores the potential impact and utility of quantitative, data-driven methods in comprehending and potentially shaping cultural phenomena like music popularity. By developing a better understanding of the specific audio elements and characteristics associated with higher popularity and mainstream appeal, artists and music creators could strategically focus their creative efforts and artistic vision on incorporating these elements, potentially mitigating common challenges such as writer's block or creative stagnation.
+
+
 
 ## Weaknesses and next steps {#sec-weaknesses-next}
 
-Although estimates are relatively precise, increasing the sample size of songs could help resolve this issue and improve precision. Additionally, the Billboard data used ends in 2015, limiting the analysis's relevance to more recent years. Obtaining an updated list from Billboard or another source would enhance the dataset's timeliness. While the sample size is relatively small, this aligns with the focus on top artists. 
+### Data and Measurement
 
-Moving forward, constructing a more comprehensive dataset encompassing the entire discographies of these artists, with Spotify's assistance, could yield more precise effect estimates. Repeating this analysis on top artists within specific genres or using different artist rating criteria could uncover genre-specific relationships or highlight the influence of other Spotify API variables not covered in this analysis. Exploring alternative data sources or metrics beyond Spotify's popularity score could also provide additional insights into the determinants of a song's widespread and enduring appeal.
+The age of the data used, with the Billboard Greatest of All Time list concluding in 2015, may not fully capture contemporary trends and shifts in music culture, especially given the rapid rise of social media platforms like TikTok that drive rapid virality and micro-trends in popular music consumption. Additionally, the crowdsourced nature of certain audio features like valence and danceability, initially derived from subjective assessments by college interns, introduces an element of human subjectivity and potential bias, which could undermine the validity and generalizability of the relationships observed between these features and popularity scores. The reliance solely on Spotify popularity scores as the dependent variable may overly represent newer music versus older releases that gained popularity through non-digital means. That said, the recency factor incorporated into Spotify's scoring algorithm could potentially mitigate this concern for tracks that have maintained enduring popularity over time, which gives this analysis merit. 
 
+
+### Methodology 
+
+Methodological limitations arising from the use of multiple regression complicate the interpreation of our results. Potential unknown multicollinearity, through having two audio features be correllated in some way, could affect the interpretation and relative influence of individual variables on popularity scores. Moreover, the use of a linear regression model, while providing good initial insights, could oversimplify the relationships by failing to capture non-linear or simultaneous interaction effects between the variables analyzed. Furthermore, the dataset's limited scope, comprising only the top 10 songs per artist and excluding some tracks due to missing audio feature data from Spotify's API, restricts the sample size and may impact the precision and robustness of the parameter estimates.
+
+
+### Next steps 
+
+To address the weaknesses and expand upon the present findings, there are several avenues for future research emerge. Constructing a more comprehensive dataset with complete artist discographies and a broader array of audio features could better capture the complex relationships between musical characteristics and popularity. Exploring non-linear modeling techniques or machine learning algorithms may uncover nuanced patterns and interactions that linear models cannot detect. Incorporating alternative data sources or popularity metrics beyond the Spotify platform could provide further insights into the determinants of song appeal and resonance with audiences. Repeating the analysis on specific musical genres or using different lists of top artists could uncover genre-specific relationships or other variable influences that may be obscured in the present, more general analysis. Finally, validating and cross-referencing the results across multiple data sources would be crucial to assessing their reliability and generalizability to the whole pop music genre. 
+
+Despite it's shortcomings, my approach affords merit as the first step by a cultural analyst in using the openly available data from Spotify to analyze and quantify what makes popular music popular. Through this analysis, I hope to inspire future work in attempting to understand the uniquely human elements of what makes our global culture tick. 
 
 \newpage
 

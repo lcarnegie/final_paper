@@ -4,7 +4,7 @@
 # Date: April 21 2023
 # Contact: luca.carnegie@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: 01 -download_data.R and 02-data_cleaning.R
+# Pre-requisites: 01-download_data.R and 02-data_cleaning.R
 
 
 #### Workspace setup ####
