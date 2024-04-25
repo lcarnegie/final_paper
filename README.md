@@ -27,7 +27,7 @@ Here is a brief guide to reproducing my graphs and tables.
    
 ## Statement on LLM usage
 
-Aspects of my R code and paper were written and edited with the assistance of Large Language Models, in particular variants of Claude-3 (Claude.ai) and GPT-4 (ChatGPT). 
+Aspects of my R code and paper were written and edited with the assistance of Large Language Models, in particular variants of Claude-3 (Claude.ai) by Anthropic and GPT-4 (ChatGPT) by OpenAI. 
 
 Claude-3 Sonnet/Haiku was used for:
 - Writing and editing parts of the paper
