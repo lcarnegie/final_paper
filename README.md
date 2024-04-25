@@ -8,12 +8,12 @@ What makes a hit pop song? This paper examines the audio features that character
 
 The repo is structured as:
 
--   `data/raw_data` contains the raw data as obtained from the Spotify API using spotifyr.
--   `data/analysis_data` contains the cleaned dataset that was constructed.
+-   `data/raw_data` contains the raw data as obtained from the Spotify API using spotifyr as .csv files.
+-   `data/analysis_data` contains the cleaned dataset that was constructed saved as a .parquet file.
 -   `model` contains fitted models. 
--   `other` contains relevant literature, details about LLM chat interactions, and rough sketches.
+-   `other` contains a datasheet, details of LLM chat interactions, and rough sketches.
 -   `paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper. 
--   `scripts` contains the R scripts used to simulate, download and clean data.
+-   `scripts` contains the R scripts used to simulate, download, clean, test, and model the data.
 
 My workflow is one based, in part, on an open-source data science workflow devised by the legendary Rohan Alexander. 
 
