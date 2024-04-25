@@ -48,5 +48,13 @@ test_that("There are no missing values in key columns", {
   }
 })
 
+test_that("Loudness values are within realistic ranges", {
+  expect_true(all(cleaned_ds$loudness >= -60 & cleaned_ds$loudness <= 0))
+})
+
+test_that("Duration of songs is within plausible limits", {
+  expect_true(all(cleaned_ds$duration_secs >= 30 & cleaned_ds$duration_secs <= 1500))
+})
+
 # You can run the tests with the following line
 test_dir("tests/")

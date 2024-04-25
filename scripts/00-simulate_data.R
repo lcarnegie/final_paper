@@ -32,12 +32,9 @@ simulated_data <- tibble(
   popularity = sample(0:100, num_songs, replace = TRUE),
   song = stri_rand_strings(num_songs, 10), # Random strings of length 10 for song titles
   artist = stri_rand_strings(num_songs, 7), # Random strings of length 7 for artist names
-  energy = runif(num_songs, 0, 1), # Uniform distribution between 0 and 1
   valence = runif(num_songs, 0, 1),
   danceability = runif(num_songs, 0, 1),
-  liveness = runif(num_songs, 0, 1),
   explicit = sample(0:1, num_songs, replace = TRUE), # Binary variable, assuming 0 is not explicit, 1 is explicit
-  instrumentalness = runif(num_songs, 0, 1),
   duration_ms = sample(150000:300000, num_songs, replace = TRUE), # Duration in milliseconds, example range
   mode = sample(0:1, num_songs, replace = TRUE) # Binary variable, assuming 0 is minor, 1 is major
 )
@@ -74,7 +71,7 @@ print(c(duplicated_songs, duplicated_artists))
 
 # 5. Range Validation Test
 range_checks <- sapply(
-  simulated_data[c("energy", "valence", "danceability", "liveness", "instrumentalness")],
+  simulated_data[c("valence", "danceability")],
   function(x) all(x >= 0 & x <= 1)
 )
 print(range_checks)
