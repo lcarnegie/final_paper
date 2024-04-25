@@ -37,4 +37,4 @@ GPT-4 was used for:
 - Coding some of the R graphs
 - Debugging and troubleshooting
 
-The complete chat history with both models are available in inputs/llms. 
+The complete chat history with both models are available in `other/llms`. 
