@@ -31,6 +31,7 @@ Aspects of my R code and paper were written and edited with the assistance of La
 
 Claude-3 Sonnet/Haiku was used for:
 - Writing and editing parts of the paper
+- Some debugging
 
 GPT-4 was used for: 
 - Coding some of the R graphs
