@@ -20,7 +20,7 @@ My workflow is one based, in part, on an open-source data science workflow devis
 ## Reproducing Graphs and Tables
 Here is a brief guide to reproducing my graphs and tables. Contact for more details
 
-1.Go to `paper/paper.qmd`
+1. Go to `paper/paper.qmd`
 2. Install RStudio or any R language interpreter. Install the libaries indicated in the `setup` chunk at the top of `paper.qmd`
 4. Navigate to any of the R chunks, denoted by {r some-title} (fig denotes a figure, tbl denotes a table)
 5. Copy and paste the code into your interpreter and run. 
