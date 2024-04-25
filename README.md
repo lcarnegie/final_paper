@@ -1,4 +1,5 @@
-# The Anatomy of a Hit: Statistically Learning from the Best
+# The Anatomy of a Hit: 
+Statistically Learning from the Best
 
 ## Overview
 
