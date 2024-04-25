@@ -4,7 +4,7 @@
 
 What makes a hit pop song? This paper examines the audio features that characterize mainstream music's biggest hits. This self-directed study utilizes audio feature data from top artists' discographies, accessed through the Spotify API, to analyze via multiple linear regression which specific musical qualities significantly impact a song's assigned popularity score on Spotify.
 
-## File Structure
+## File Structure and Workflow
 
 The repo is structured as:
 
@@ -15,13 +15,15 @@ The repo is structured as:
 -   `paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper. 
 -   `scripts` contains the R scripts used to simulate, download and clean data.
 
-## Reproducing Graphs and Tables
-Here is a quick guide to reproducing my graphs and tables.
+My workflow is one based, in part, on an open-source data science workflow devised by the legendary Rohan Alexander. 
 
-1. Install RStudio or any R language interpreter. Install the libaries indicated in the `setup` chunk at the top.  
-2. Go to `paper/paper.qmd`
-3. Navigate to any of the R chunks, denoted by {r some-title} (fig denotes a figure, tbl denotes a table)
-4. Copy and paste the code into your interpreter and run. 
+## Reproducing Graphs and Tables
+Here is a brief guide to reproducing my graphs and tables. Contact for more details
+
+1.Go to `paper/paper.qmd`
+2. Install RStudio or any R language interpreter. Install the libaries indicated in the `setup` chunk at the top of `paper.qmd`
+4. Navigate to any of the R chunks, denoted by {r some-title} (fig denotes a figure, tbl denotes a table)
+5. Copy and paste the code into your interpreter and run. 
    
 ## Statement on LLM usage
 
