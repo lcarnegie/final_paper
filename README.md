@@ -2,7 +2,7 @@
 
 ## Overview
 
-What makes a hit pop song? This paper examines the audio features that characterize mainstream music's biggest hits. This self-directed study utilizes audio feature data from top artists' discographies, accessed through the Spotify API, to analyze via multiple linear regression which specific musical qualities significantly impact a song's assigned popularity score on Spotify.
+What makes a hit pop song? This paper examines the audio features that characterize mainstream music's biggest hits. This self-directed study utilizes audio feature data from top artists' discographies and downloads them through the Spotify API. Then, I analyze the data through exploration and multiple linear regression to find which specific musical qualities significantly impact a song's assigned popularity score on Spotify.
 
 ## File Structure and Workflow
 
